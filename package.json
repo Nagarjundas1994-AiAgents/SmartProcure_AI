@@ -1,0 +1,29 @@
+{
+  "name": "SmartProcure_AI",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@cap-js/agents": "^0.9.10",
+    "@cap-js/hana": "^3",
+    "@cap-js/mcp": "^1.5.0",
+    "@sap/cds": "^10",
+    "@sap/xssec": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/cds-test": "^1.0.2",
+    "@cap-js/sqlite": "^3",
+    "@sap/cds-dk": "^10"
+  },
+  "scripts": {
+    "start": "cds-serve"
+  },
+  "private": true,
+  "cds": {
+    "requires": {
+      "[production]": {
+        "auth": "xsuaa"
+      },
+      "destinations": true
+    }
+  }
+}
