@@ -26,11 +26,12 @@ function evaluate({ title, body, head, base, files }) {
   if (base === 'main' && head !== 'develop' && !head.startsWith('hotfix/'))
     add(f, 'Only `develop` (release) or `hotfix/*` may target `main`. Open this PR into `develop`.');
 
+  const bot = head.startsWith('dependabot/');   // Dependabot writes its own description, not our template
   const why = section(body, 'What and why').replace(/closes\s+#\s*$/im, '').trim();
-  if (why.length < 20) add(f, 'Fill in **What and why** (at least a sentence, and link the issue with `Closes #NN`).');
+  if (!bot && why.length < 20) add(f, 'Fill in **What and why** (at least a sentence, and link the issue with `Closes #NN`).');
   const typeBlock = section(body, 'Type of change');
-  if (!/\[[xX]\]/.test(typeBlock)) add(f, 'Tick one **Type of change** box.');
-  if (!/\[[xX]\]\s*I tried it manually|\[[xX]\]\s*CI is green/.test(section(body, 'How I tested it')))
+  if (!bot && !/\[[xX]\]/.test(typeBlock)) add(f, 'Tick one **Type of change** box.');
+  if (!bot && !/\[[xX]\]\s*I tried it manually|\[[xX]\]\s*CI is green/.test(section(body, 'How I tested it')))
     add(w, 'No evidence in **How I tested it**. Say how you checked the change.');
 
   const changed = files.reduce((n, x) => n + x.additions + x.deletions, 0);

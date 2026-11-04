@@ -30,3 +30,8 @@ test('warnings: cross-workstream, no tests, contract, unprotected action, secret
   assert.ok(r.warn.length >= 4 && r.fail.some(m => m.includes('secret')));
   assert.match(render(r), /❌ PR check failed/);
 });
+
+test('dependabot PRs skip the template rules', () => {
+  const r = evaluate({ title: 'chore(deps): bump actions/checkout from 4 to 7', head: 'dependabot/github_actions/develop/actions/checkout-7', base: 'develop', body: 'Bumps actions/checkout.', files: [file('.github/workflows/ci.yml')] });
+  assert.ok(r.ok); assert.deepStrictEqual(r.warn, []);
+});
