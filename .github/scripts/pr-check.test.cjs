@@ -24,7 +24,7 @@ test('feature PR into main is rejected', () => {
 test('warnings: cross-workstream, no tests, contract, unprotected action, secret', () => {
   const r = evaluate({ ...base, files: [
     file('srv/procurement-service.js'), file('srv/supplier-service.cds', '+  action blockAll();'),
-    file('db/schema.cds'), file('srv/x.js', '+const k = "-----BEGIN RSA PRIVATE KEY-----"'),
+    file('db/schema.cds'), file('srv/x.js', '+const k = "-----BEGIN RSA ' + 'PRIVATE KEY-----"'),   // split so pr-check does not flag its own test
   ] });
   assert.ok(r.labels.includes('cross-workstream') && r.labels.includes('contract-change'));
   assert.ok(r.warn.length >= 4 && r.fail.some(m => m.includes('secret')));
