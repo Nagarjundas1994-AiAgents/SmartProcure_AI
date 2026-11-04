@@ -1,0 +1,14 @@
+# Code owners are automatically requested for review, and (with the branch ruleset) their approval is REQUIRED.
+# When the second developer joins, add their GitHub handle next to the owner on the paths they own,
+# e.g.:   /srv/supplier-*   @Nagarjundas1994-AiAgents @second-developer
+# Rule of thumb: the OTHER developer reviews your code, so list each person on the paths the other one writes.
+
+*                      @Nagarjundas1994-AiAgents
+
+# Security-relevant and shared files: always reviewed by a code owner
+/.github/              @Nagarjundas1994-AiAgents
+/xs-security.json      @Nagarjundas1994-AiAgents
+/mta.yaml              @Nagarjundas1994-AiAgents
+/package.json          @Nagarjundas1994-AiAgents
+/package-lock.json     @Nagarjundas1994-AiAgents
+/db/                   @Nagarjundas1994-AiAgents
