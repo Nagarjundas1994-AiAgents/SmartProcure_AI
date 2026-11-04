@@ -3,9 +3,10 @@
 
 const TITLE = /^(feat|fix|docs|chore|refactor|test|ci|build|perf|revert)(\([\w.-]+\))?!?: \S.{3,}/;
 const BRANCH = /^(feature\/us-\d+-[a-z0-9-]+|fix\/|chore\/|docs\/|hotfix\/|release\/|dependabot\/)/;
-const DEV1 = /^(srv\/procurement|app\/procurement-ui|test\/procurement)/;
-const DEV2 = /^(srv\/supplier|app\/supplier-ui|test\/supplier)/;
-const CONTRACT = /^(db\/|xs-security\.json$|mta\.yaml$|docs\/api-contracts\/)/;
+// Workstream paths mirror .github/CODEOWNERS.
+const DEV1 = /^(srv\/procurement|srv\/lib\/receipts|srv\/integrations\/s4-sync|app\/procurement-ui|test\/procurement)/;
+const DEV2 = /^(srv\/supplier|srv\/lib\/scoring|srv\/integrations\/(supplier-portal|csv-import)|srv\/(mcp|agents)\/|mocks\/|app\/supplier-ui|test\/(supplier|agents)\/)/;
+const CONTRACT = /^(db\/|srv\/[^/]+\.cds$|srv\/external\/|xs-security\.json$|mta\.yaml$|docs\/api-contracts\/)/;
 const SOURCE = /^(srv|app|db)\//;
 const TEST = /(^test\/|\.test\.[jt]s$)/;
 const SECRET = /-----BEGIN [A-Z ]*PRIVATE KEY-----|\b(?:ghp|github_pat|xox[bp])_[A-Za-z0-9_-]{20,}|"clientsecret"\s*:\s*"[^"]{8,}"/i;
