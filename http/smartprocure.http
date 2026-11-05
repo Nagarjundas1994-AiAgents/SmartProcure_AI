@@ -1,0 +1,55 @@
+### VS Code "REST Client" file. Users: alice, bob, carol, dave, frank, admin (password = name)
+@host = http://localhost:4004
+
+### US-01 create a request as alice
+POST {{host}}/odata/v4/procurement/PurchaseRequests
+Authorization: Basic YWxpY2U6YWxpY2U=
+Content-Type: application/json
+
+{ "title": "Safety gloves", "justification": "Workshop",
+  "items": [{ "material_ID": "a1000000-0000-4000-8000-000000000001", "quantity": 10 }] }
+
+### US-02 my requests (alice sees only hers)
+GET {{host}}/odata/v4/procurement/PurchaseRequests?$select=requestNo,title,status,totalAmount
+Authorization: Basic YWxpY2U6YWxpY2U=
+
+### US-03 approve as bob
+POST {{host}}/odata/v4/procurement/PurchaseRequests(b1000000-0000-4000-8000-000000000001)/ProcurementService.approveRequest
+Authorization: Basic Ym9iOmJvYg==
+Content-Type: application/json
+
+{ "comment": "Needed for line 3" }
+
+### US-06 sync from S/4HANA (mock) as carol
+POST {{host}}/odata/v4/procurement/syncFromS4
+Authorization: Basic Y2Fyb2w6Y2Fyb2w=
+Content-Type: application/json
+
+{}
+
+### US-12 compare quotations
+GET {{host}}/odata/v4/supplier/compareQuotations(materialNo='RM-1001')
+Authorization: Basic Ym9iOmJvYg==
+
+### US-11 sync from supplier portal (needs: npm run mock:portal)
+POST {{host}}/odata/v4/supplier/syncFromPortal
+Authorization: Basic Y2Fyb2w6Y2Fyb2w=
+Content-Type: application/json
+
+{}
+
+### US-13 MCP: list tools as bob (streamable HTTP, answer is one SSE event)
+POST {{host}}/mcp/smartprocure-mcp
+Authorization: Basic Ym9iOmJvYg==
+Accept: application/json, text/event-stream
+Content-Type: application/json
+
+{ "jsonrpc": "2.0", "id": 1, "method": "tools/list" }
+
+### US-13 MCP: call a tool
+POST {{host}}/mcp/smartprocure-mcp
+Authorization: Basic Ym9iOmJvYg==
+Accept: application/json, text/event-stream
+Content-Type: application/json
+
+{ "jsonrpc": "2.0", "id": 2, "method": "tools/call", "params": { "name": "compareSupplierQuotations", "arguments": { "materialNo": "RM-1001" } } }
