@@ -36,6 +36,12 @@ The repository admin role can merge a pull request without the required approval
 (a solo-maintainer situation). Direct pushes stay blocked for everyone. Remove that bypass in
 *Settings → Rules → Rulesets → protect-main-and-develop* once a second reviewer is active.
 
+## Automatic PR check (`pr-check`)
+
+Every PR gets one bot comment that updates on each push. **Must fix** items (Conventional-Commit title, branch name, filled description, ticked change type, leaked secrets, `.only` in tests) fail the check.
+**Reviewer attention** items (no tests, both workstreams touched, contract files changed, new action without `@requires`/`@restrict`, debug leftovers, >400 lines) are advice, so the author should answer them in the PR.
+Labels `workstream: procurement`, `workstream: supplier`, `cross-workstream`, `contract-change`, `size: S|M|L` are set automatically. Rules: `.github/scripts/pr-check.cjs`.
+
 ## Reviewer checklist
 
 - [ ] The PR does one thing and the description says why
