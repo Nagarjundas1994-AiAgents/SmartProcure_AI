@@ -1,0 +1,6 @@
+PurchaseOrder;PurchaseOrderItem;Material;PurchaseOrderItemText;OrderQuantity;PurchaseOrderQuantityUnit;NetPriceAmount;DocumentCurrency
+4500000001;00010;SP-2001;Bearing 6204;500;EA;320;INR
+4500000011;00010;RM-1001;Steel Plate 5mm;100;KG;1190;INR
+4500000011;00020;RM-1002;Copper Wire 2.5mm;50;M;480;INR
+4500000012;00010;RM-1001;Steel Plate 5mm;40;KG;1140;INR
+4500000013;00010;RM-1001;Steel Plate 5mm;10;KG;1200;INR
