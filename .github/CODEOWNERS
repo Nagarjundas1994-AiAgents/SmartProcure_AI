@@ -1,0 +1,37 @@
+# Code owners are requested automatically, and the branch ruleset requires ONE approval from a code owner.
+# The LAST matching line wins, so the most specific rules are at the bottom.
+# Rule of thumb: the OTHER developer reviews your code; the maintainer owns the contract, security and the repo itself.
+# Each developer adds their handle in their onboarding PR (chapter 01): Developer 1 on the supplier lines, Developer 2 on the procurement lines.
+
+*                                  @Nagarjundas1994-AiAgents
+
+# Developer 1 code - reviewed by Developer 2 (or the maintainer)
+/srv/procurement-service.js        @Nagarjundas1994-AiAgents
+/srv/lib/receipts.js               @Nagarjundas1994-AiAgents
+/srv/integrations/s4-sync.js       @Nagarjundas1994-AiAgents
+/app/procurement-ui/               @Nagarjundas1994-AiAgents
+/test/procurement/                 @Nagarjundas1994-AiAgents
+
+# Developer 2 code - reviewed by Developer 1 (or the maintainer)
+/srv/supplier-service.js           @Nagarjundas1994-AiAgents
+/srv/lib/scoring.js                @Nagarjundas1994-AiAgents
+/srv/integrations/supplier-portal.js @Nagarjundas1994-AiAgents
+/srv/integrations/csv-import.js    @Nagarjundas1994-AiAgents
+/srv/mcp/                          @Nagarjundas1994-AiAgents
+/srv/agents/                       @Nagarjundas1994-AiAgents
+/mocks/                            @Nagarjundas1994-AiAgents
+/app/supplier-ui/                  @Nagarjundas1994-AiAgents
+/test/supplier/                    @Nagarjundas1994-AiAgents
+/test/agents/                      @Nagarjundas1994-AiAgents
+
+# Contract, security and shared files - maintainer only
+/db/                               @Nagarjundas1994-AiAgents
+/srv/*.cds                         @Nagarjundas1994-AiAgents
+/srv/external/                     @Nagarjundas1994-AiAgents
+/srv/lib/common.js                 @Nagarjundas1994-AiAgents
+/docs/api-contracts/               @Nagarjundas1994-AiAgents
+/xs-security.json                  @Nagarjundas1994-AiAgents
+/mta.yaml                          @Nagarjundas1994-AiAgents
+/package.json                      @Nagarjundas1994-AiAgents
+/package-lock.json                 @Nagarjundas1994-AiAgents
+/.github/                          @Nagarjundas1994-AiAgents

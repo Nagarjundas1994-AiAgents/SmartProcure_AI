@@ -46,3 +46,4 @@ export default class ProcurementService extends cds.ApplicationService {
         return super.init()
     }
 }
+

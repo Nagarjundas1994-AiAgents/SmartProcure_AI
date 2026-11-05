@@ -1,0 +1,2 @@
+ID,kind,subject,supplier_ID,request_ID,score,text,status,model
+f1000000-0000-4000-8000-0000000000f1,SUPPLIER,PR-2026-0001,51000000-0000-4000-8000-000000000001,b1000000-0000-4000-8000-000000000001,82.5,Best balance of price and 7 day delivery - sample seed,NEW,seed

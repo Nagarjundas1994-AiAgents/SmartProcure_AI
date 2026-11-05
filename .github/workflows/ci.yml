@@ -1,0 +1,33 @@
+name: ci
+
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [develop, main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # The job name "ci" is the REQUIRED status check in the branch ruleset: do not rename it without updating the ruleset.
+  ci:
+    name: ci
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: CDS model compiles
+        run: |
+          if [ -d db ] || [ -d srv ]; then npx cds compile '*' --to json > /dev/null; else echo "no model yet"; fi
+      - name: Tests
+        run: npm test --if-present

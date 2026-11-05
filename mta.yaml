@@ -1,0 +1,110 @@
+_schema-version: 3.3.0
+ID: smartprocure-enterprise
+version: 1.0.0
+description: "SmartProcure - AI-powered enterprise procurement and supplier management on SAP CAP"
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production
+        # the Fiori apps ship inside the srv module (CAP serves ./app statically). Upgrade path: HTML5 Application Repository + Work Zone.
+        - node -e "for (const d of ['procurement-ui','supplier-ui','common']) require('fs').cpSync('app/'+d, 'gen/srv/app/'+d, {recursive:true})"
+modules:
+  - name: smartprocure-enterprise-srv
+    type: nodejs
+    path: gen/srv
+    parameters:
+      instances: 1
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm-ci
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: smartprocure-enterprise-auth
+      - name: smartprocure-enterprise-db
+      - name: smartprocure-enterprise-destination
+
+  - name: smartprocure-enterprise-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: smartprocure-enterprise-db
+  - name: smartprocure-enterprise
+    type: approuter.nodejs
+    path: .deploy/app-router
+    parameters:
+      keep-existing-routes: true
+      disk-quota: 256M
+      memory: 256M
+    requires:
+      - name: srv-api
+        group: destinations
+        properties:
+          name: srv-api # must be used in xs-app.json as well
+          url: ~{srv-url}
+          forwardAuthToken: true
+      - name: smartprocure-enterprise-auth
+      - name: smartprocure-enterprise-destination
+    provides:
+      - name: app-api
+        properties:
+          app-protocol: ${protocol}
+          app-uri: ${default-uri}
+
+resources:
+  - name: smartprocure-enterprise-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: smartprocure-enterprise-${org}-${space}
+        tenant-mode: dedicated
+        oauth2-configuration:
+          credential-types:
+            - "binding-secret"
+            - "x509"
+          redirect-uris:
+            - https://*~{app-api/app-uri}/**
+        role-collections:
+          - name: 'Manager (smartprocure-enterprise ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.Manager'
+          - name: 'ProcurementOfficer (smartprocure-enterprise ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.ProcurementOfficer'
+          - name: 'Employee (smartprocure-enterprise ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.Employee'
+          - name: 'Administrator (smartprocure-enterprise ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.Administrator'
+          - name: 'WarehouseEmployee (smartprocure-enterprise ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.WarehouseEmployee'
+    requires:
+      - name: app-api
+  - name: smartprocure-enterprise-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+  - name: smartprocure-enterprise-destination
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite
