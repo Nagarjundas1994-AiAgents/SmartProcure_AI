@@ -1,0 +1,6 @@
+ID,supplierNo,name,country_code,email,state,riskLevel,s4PartnerId,portalId
+51000000-0000-4000-8000-000000000001,S-1001,Tata Steel Supplies,IN,sales@tatasteel.example,ACTIVE,LOW,10100001,P-9001
+51000000-0000-4000-8000-000000000002,S-1002,Bharat Electronics Parts,IN,orders@bharatelec.example,ACTIVE,LOW,10100002,P-9002
+51000000-0000-4000-8000-000000000003,S-1003,Shakti Logistics,IN,desk@shakti.example,ACTIVE,HIGH,10100003,P-9003
+51000000-0000-4000-8000-000000000004,S-1004,Nordic Fasteners AB,SE,sales@nordicfast.example,ACTIVE,MEDIUM,10100004,P-9004
+51000000-0000-4000-8000-000000000005,S-1005,Apex Office Supplies,IN,hello@apex.example,PENDING,MEDIUM,,

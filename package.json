@@ -1,7 +1,19 @@
 {
-  "name": "SmartProcure_AI",
+  "name": "smartprocure-enterprise",
   "version": "1.0.0",
+  "description": "SmartProcure - AI-powered enterprise procurement and supplier management on SAP CAP",
   "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "cds-serve",
+    "watch": "cds watch",
+    "mock:portal": "node mocks/supplier-portal-mock.js",
+    "test": "node --test --test-concurrency=1 test/*/*.test.js",
+    "test:procurement": "node --test test/procurement/*.test.js",
+    "test:supplier": "node --test test/supplier/*.test.js",
+    "test:integrations": "node --test test/integrations/*.test.js",
+    "test:agents": "node --test test/agents/*.test.js"
+  },
   "dependencies": {
     "@cap-js/agents": "^0.9.10",
     "@cap-js/hana": "^3",
@@ -14,16 +26,108 @@
     "@cap-js/sqlite": "^3",
     "@sap/cds-dk": "^10"
   },
-  "scripts": {
-    "start": "cds-serve"
-  },
-  "private": true,
   "cds": {
     "requires": {
-      "[production]": {
-        "auth": "xsuaa"
+      "auth": {
+        "kind": "mocked",
+        "users": {
+          "alice": {
+            "password": "alice",
+            "roles": [
+              "Employee"
+            ]
+          },
+          "bob": {
+            "password": "bob",
+            "roles": [
+              "Employee",
+              "Manager"
+            ]
+          },
+          "carol": {
+            "password": "carol",
+            "roles": [
+              "ProcurementOfficer"
+            ]
+          },
+          "dave": {
+            "password": "dave",
+            "roles": [
+              "WarehouseEmployee"
+            ]
+          },
+          "erin": {
+            "password": "erin",
+            "roles": [
+              "Employee"
+            ]
+          },
+          "frank": {
+            "password": "frank",
+            "roles": [
+              "Employee",
+              "Manager"
+            ]
+          },
+          "admin": {
+            "password": "admin",
+            "roles": [
+              "Administrator"
+            ]
+          },
+          "nobody": {
+            "password": "nobody",
+            "roles": []
+          }
+        }
       },
-      "destinations": true
+      "[production]": {
+        "auth": {
+          "kind": "xsuaa"
+        }
+      },
+      "destinations": true,
+      "API_PURCHASEORDER_PROCESS_SRV": {
+        "kind": "odata-v2",
+        "model": "srv/external/API_PURCHASEORDER_PROCESS_SRV",
+        "[production]": {
+          "credentials": {
+            "destination": "S4HANA_PO",
+            "path": "/sap/opu/odata/sap/API_PURCHASEORDER_PROCESS_SRV"
+          }
+        }
+      },
+      "API_MATERIAL_DOCUMENT_SRV": {
+        "kind": "odata-v2",
+        "model": "srv/external/API_MATERIAL_DOCUMENT_SRV",
+        "[production]": {
+          "credentials": {
+            "destination": "S4HANA_PO",
+            "path": "/sap/opu/odata/sap/API_MATERIAL_DOCUMENT_SRV"
+          }
+        }
+      },
+      "SupplierPortal": {
+        "kind": "rest",
+        "credentials": {
+          "url": "http://localhost:4010"
+        },
+        "[production]": {
+          "credentials": {
+            "destination": "SUPPLIER_PORTAL"
+          }
+        }
+      },
+      "llm": {
+        "kind": "llm-mock",
+        "[production]": {
+          "kind": "aicore/sonnet"
+        }
+      }
+    },
+    "mcp": {
+      "autowire": false,
+      "per_action_tool": true
     }
   }
 }
