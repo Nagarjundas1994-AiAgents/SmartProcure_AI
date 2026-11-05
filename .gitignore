@@ -18,5 +18,8 @@ mta_archives/
 # @cap-js/cds-typer
 @cds-models
 
-# local secrets
+# environment
 .env
+
+# contracts
+shared-contract.md
