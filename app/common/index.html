@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SmartProcure</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f5f6f7; color: #32363a }
+    header { background: #0a6ed1; color: #fff; padding: 14px 24px; font-size: 18px }
+    main { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; padding: 24px }
+    a.tile { background: #fff; border-radius: 8px; padding: 20px; text-decoration: none; color: inherit; box-shadow: 0 1px 4px #0002 }
+    a.tile b { display: block; margin-bottom: 6px; color: #0a6ed1 }
+    small { color: #6a6d70 }
+  </style>
+</head>
+<body>
+  <header>SmartProcure &ndash; launchpad (shared shell, owned by both developers)</header>
+  <main>
+    <a class="tile" href="/procurement-ui/webapp/index.html"><b>Purchase Requests</b><small>Developer 1 &middot; create, approve, track</small></a>
+    <a class="tile" href="/supplier-ui/webapp/index.html"><b>Suppliers</b><small>Developer 2 &middot; directory, certificates</small></a>
+    <a class="tile" href="/odata/v4/procurement/$metadata"><b>Procurement API</b><small>OData V4 metadata</small></a>
+    <a class="tile" href="/odata/v4/supplier/$metadata"><b>Supplier API</b><small>OData V4 metadata</small></a>
+  </main>
+</body>
+</html>
